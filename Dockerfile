@@ -1,4 +1,4 @@
-FROM debian:testing
+FROM perl:slim
 
 COPY entrypoint.sh /entrypoint.sh
 
