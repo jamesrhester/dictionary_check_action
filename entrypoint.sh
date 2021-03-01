@@ -4,10 +4,9 @@
 
 apt-get update
 
-apt-get install cod-tools
+apt-get -y install cod-tools
 
 # run the checks
-popd
 
 shopt -s nullglob
 for file in ./*.dic
