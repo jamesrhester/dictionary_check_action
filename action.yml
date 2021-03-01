@@ -1,0 +1,9 @@
+name: 'CIF dictionary semantic and style check'
+description: 'Check that all *.dic files in the top-level directory conform to DDLm dictionary semantics'
+outputs:
+        result:
+                description: 'Result of dictionary semantic check'
+
+runs:
+        using: 'docker'
+        image: 'Dockerfile'
