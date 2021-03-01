@@ -23,25 +23,37 @@ ERR_FILE=$(mktemp)
 for file in ./*.dic
 do
     echo "$file"
-    # Run the checks
-    cif_ddlm_dic_check "$file" > "${OUT_FILE}" 2> "${ERR_FILE}"
+    # Run the checks and report fatal errors
+    cif_ddlm_dic_check "$file" > "${OUT_FILE}" 2> "${ERR_FILE}" || (
+        echo "Execution of the 'cif_ddlm_dic_check' script failed with" \
+             "the following errors:"
+        cat "${ERR_FILE}"
+        rm -rf "${OUT_FILE}" "${ERR_FILE}"
+        exit 1
+    )
 
-    # Filter out insignificant error messages:
-    # grep -v -e 'pattern 1' -e "pattern 2" "${ERR_FILE}" | sponge "${ERR_FILE}"
+    # Filter and report error messages
+    #~ grep "${ERR_FILE}" -v \
+    #~      -e "ignored message A" \
+    #~      -e "ignored message B" |
+    #~ sponge "${ERR_FILE}"
     if [ -s "${ERR_FILE}" ]
     then
         echo "Dictionary check generated the following non-fatal errors:"
         cat "${ERR_FILE}"
     fi
 
-    # Filter out insignificant output messages:
-    # grep -v -e 'pattern a' -e "pattern b" "${OUT_FILE}" | sponge "${OUT_FILE}"
+    # Filter and report output messages
+    #~ grep "${OUT_FILE}" -v \
+    #~     -e "ignored message A" \
+    #~     -e "ignored message B" |
+    #~ sponge "${OUT_FILE}"
     if [ -s "${OUT_FILE}" ]
     then
         echo "Dictionary check detected the following irregularities:";
         cat "${OUT_FILE}"
         rm -rf "${OUT_FILE}" "${ERR_FILE}"
-        exit 1;
+        exit 1
     fi
 done
 
