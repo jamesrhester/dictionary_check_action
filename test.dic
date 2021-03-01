@@ -185,7 +185,7 @@ save_definition.class
 ;
     _name.category_id            definition
     _name.object_id              class
-    _type.purpose                State
+    _type.purpose                Stately
     _type.source                 Assigned
     _type.container              Single
     _type.contents               Code
@@ -1930,45 +1930,6 @@ save_type.source
                 domain instance. This item is NOT PRIMITIVE.
 ;
     _enumeration.default         Assigned
-
-save_
-
-#============================================================================
-
-save_UNITS
-
-    _definition.id               UNITS
-    _definition.scope            Category
-    _definition.class            Set
-    _definition.update           2013-03-06
-    _description.text
-;
-    The attributes for specifying units of measure.
-;
-    _name.category_id            ATTRIBUTES
-    _name.object_id              UNITS
-
-save_
-
-
-save_units.code
-
-    _definition.id               '_units.code'
-    _definition.class            Attribute
-    _definition.update           2012-01-25
-    _description.text
-;
-     A code which identifies the units of measurement.
-;
-    _name.category_id            units
-    _name.object_id              code
-    _type.purpose                State
-    _type.source                 Assigned
-    _type.container              Single
-    _type.contents               Code
-    _enumeration.default         Arbitrary
-
-    _import.get [{'save':units_code  'file':templ_enum.cif}]
 
 save_
 
