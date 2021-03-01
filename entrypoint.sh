@@ -2,6 +2,8 @@
 
 # get latest cod-tools
 
+apt-get update
+
 apt-get install cod-tools
 
 # run the checks
