@@ -2,9 +2,9 @@
 
 # get latest cod-tools
 
-#apt-get update
+apt-get update
 
-#apt-get -y install cod-tools
+apt-get -y install cod-tools
 
 # run the checks
 # any output from cif_ddlm_dic_check flags
