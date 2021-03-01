@@ -1,4 +1,4 @@
-FROM gcc:9.3.0
+FROM debian:testing
 
 COPY entrypoint.sh /entrypoint.sh
 
