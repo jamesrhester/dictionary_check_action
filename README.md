@@ -1,2 +1,3 @@
 # dictionary_check_action
-Check that a dictionary has no semantic or style errors
+This action can be added to dictionary repository workflows to check that any proposed updates to a dictionary 
+(e.g. pull requests) have no semantic or style errors.
