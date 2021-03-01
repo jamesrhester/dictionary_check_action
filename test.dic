@@ -25,7 +25,7 @@ save_ATTRIBUTES
 
     _definition.id               ATTRIBUTES
     _definition.scope            Category
-    _definition.class            Head
+    _definition.class            NotHead    #<- an error
     _definition.update           2011-07-27
     _description.text
 ;
