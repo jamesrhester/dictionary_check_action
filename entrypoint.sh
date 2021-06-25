@@ -110,7 +110,7 @@ do
     fi
 
     # Filter and report output messages
-    grep "${OUT_FILE}" -P -v \
+    grep "${OUT_FILE}" -E -v \
          -e "is recommended in the .*? scope" \
          -e "data item '_description_example.case' value" |
     sponge "${OUT_FILE}"
