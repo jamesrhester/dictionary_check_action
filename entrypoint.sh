@@ -2,19 +2,49 @@
 
 set -ue
 
-# get latest cod-tools
-
 apt-get update
 
-apt-get -y install cod-tools
+# Install 'subversion' since it is needed to retrieve the cod-tools package
+apt-get -y install subversion
 
-# install 'moreutils' since it contain the 'sponge' program 
-
+# Install 'moreutils' since it contain the 'sponge' program 
 apt-get -y install moreutils
 
-# install 'git' since it is needed to retrieve the imported dictionaries
-
+# Install 'git' since it is needed to retrieve the imported dictionaries
 apt-get -y install git
+
+# Make a sparse check out a fixed 'cod-tools' revision
+COD_TOOLS_DIR=cod-tools
+COD_TOOLS_REV=8869
+mkdir ${COD_TOOLS_DIR}
+cd ${COD_TOOLS_DIR}
+svn co -r ${COD_TOOLS_REV} \
+       --depth immediates \
+       svn://www.crystallography.net/cod-tools/trunk .
+svn up -r ${COD_TOOLS_REV} \
+       --set-depth infinity \
+       dependencies makefiles scripts src
+
+# Install 'cod-tools' dependencies
+apt-get -y install sudo
+./dependencies/Ubuntu-20.04/build.sh
+./dependencies/Ubuntu-20.04/run.sh
+
+# Patch the Makefile and run custom build commands
+# to avoid time-intensive tests
+perl -pi -e 's/^(include \${DIFF_DEPEND})$/#$1/' \
+    makefiles/Makefile-perl-multiscript-tests
+make "$(pwd)"/src/lib/perl5/COD/CIF/Parser/Bison.pm
+make "$(pwd)"/src/lib/perl5/COD/CIF/Parser/Yapp.pm
+make ./src/lib/perl5/COD/ToolsVersion.pm
+
+PERL5LIB=$(pwd)/src/lib/perl5${PERL5LIB:+:${PERL5LIB}}
+export PERL5LIB
+# shellcheck disable=SC2123
+PATH=$(pwd)/scripts${PATH:+:${PATH}}
+export PATH
+
+cd ..
 
 # Prepare dictionaries and template files that may be
 # required to properly validate other dictionaries
