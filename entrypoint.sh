@@ -101,10 +101,9 @@ do
     fi
 
     # Filter and report output messages
-    #~ grep "${OUT_FILE}" -v \
-    #~     -e "ignored message A" \
-    #~     -e "ignored message B" |
-    #~ sponge "${OUT_FILE}"
+    grep "${OUT_FILE}" -v \
+         -e "is not compatible with the 'Set' definition class" |
+    sponge "${OUT_FILE}"
     if [ -s "${OUT_FILE}" ]
     then
         echo "Dictionary check detected the following irregularities:";
