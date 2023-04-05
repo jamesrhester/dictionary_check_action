@@ -15,7 +15,7 @@ apt-get -y install git
 
 # Make a sparse check out a fixed 'cod-tools' revision
 COD_TOOLS_DIR=cod-tools
-COD_TOOLS_REV=8928
+COD_TOOLS_REV=9523
 mkdir ${COD_TOOLS_DIR}
 cd ${COD_TOOLS_DIR}
 svn co -r ${COD_TOOLS_REV} \
@@ -101,9 +101,10 @@ do
     fi
 
     # Filter and report output messages
-    grep "${OUT_FILE}" -v \
-         -e "is not compatible with the 'Set' definition class" |
-    sponge "${OUT_FILE}"
+    #~ grep "${OUT_FILE}" -v \
+    #~      -e "ignored message A" \
+    #~      -e "ignored message B" |
+    #~ sponge "${OUT_FILE}"
     if [ -s "${OUT_FILE}" ]
     then
         echo "Dictionary check detected the following irregularities:";
