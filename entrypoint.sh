@@ -105,6 +105,13 @@ do
     #~      -e "ignored message A" \
     #~      -e "ignored message B" |
     #~ sponge "${OUT_FILE}"
+
+    # Suppress warnings about missing dictionary DOI for now
+    # (see discussion in https://github.com/COMCIFS/cif_core/pull/428).
+    grep "${ERR_FILE}" -v \
+         -e "data item '_dictionary.doi' is recommended" |
+    sponge "${ERR_FILE}"
+    
     if [ -s "${OUT_FILE}" ]
     then
         echo "Dictionary check detected the following irregularities:";
