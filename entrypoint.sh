@@ -135,6 +135,13 @@ do
     #~      -e "ignored message A" \
     #~      -e "regular expression matching ignored message B .*?" |
     #~ sponge "${ERR_FILE}"
+
+    # Suppress warnings about dictionary attributes with the 'inherited'
+    # type until this functionality gets properly implemented.
+    grep "${ERR_FILE}" -v \
+          -e "content type 'inherited' is not recognised" |
+     sponge "${ERR_FILE}"
+    
     if [ -s "${ERR_FILE}" ]
     then
         echo "Dictionary validation generated the following non-fatal errors:"
