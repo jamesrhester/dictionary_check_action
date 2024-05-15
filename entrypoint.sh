@@ -15,7 +15,7 @@ apt-get -y install git
 
 # Make a sparse check out a fixed 'cod-tools' revision
 COD_TOOLS_DIR=cod-tools
-COD_TOOLS_REV=9586
+COD_TOOLS_REV=10040
 mkdir ${COD_TOOLS_DIR}
 cd ${COD_TOOLS_DIR}
 svn co -r ${COD_TOOLS_REV} \
@@ -27,8 +27,8 @@ svn up -r ${COD_TOOLS_REV} \
 
 # Install 'cod-tools' dependencies
 apt-get -y install sudo
-./dependencies/Ubuntu-20.04/build.sh
-./dependencies/Ubuntu-20.04/run.sh
+./dependencies/Ubuntu-22.04/build.sh
+./dependencies/Ubuntu-22.04/run.sh
 
 # Patch the Makefile and run custom build commands
 # to avoid time-intensive tests
