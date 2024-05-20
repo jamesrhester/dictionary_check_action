@@ -15,7 +15,7 @@ apt-get -y install git
 
 # Make a sparse check out a fixed 'cod-tools' revision
 COD_TOOLS_DIR=cod-tools
-COD_TOOLS_REV=10042
+COD_TOOLS_REV=10048
 mkdir ${COD_TOOLS_DIR}
 cd ${COD_TOOLS_DIR}
 svn co -r ${COD_TOOLS_REV} \
