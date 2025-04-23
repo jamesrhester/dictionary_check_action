@@ -2,7 +2,7 @@
 
 set -ue
 
-TOP_EXTRA_DIC_DIR=extra-dic-dir
+EXTERNAL_DIC_DIR=cif-dictionaries
 
 apt-get update
 
@@ -48,6 +48,23 @@ export PATH
 
 cd ..
 
+# Dictionary and template files in the tested repository
+# should appear first in the import search path.
+COD_TOOLS_DDLM_IMPORT_PATH=.
+
+# Add external dictionaries to the import path.
+if [ -d "${EXTERNAL_DIC_DIR}" ]
+then
+    for DIC_DIR in "${EXTERNAL_DIC_DIR}"/*
+    do
+        COD_TOOLS_DDLM_IMPORT_PATH="${COD_TOOLS_DDLM_IMPORT_PATH}:${DIC_DIR}"
+        if [ -f "${DIC_DIR}"/ddl.dic ]
+        then
+            DDLM_REFERENCE_DIC=${DIC_DIR}/ddl.dic
+        fi
+    done
+fi
+
 # Prepare dictionaries and template files that may be
 # required to properly validate other dictionaries
 TMP_DIR=$(mktemp -d)
@@ -60,26 +77,19 @@ TMP_DIR=$(mktemp -d)
 # against itself. This scenario will most likely only occur in the
 # COMCIFS/cif_core repository. 
 #
-# If these dictionaries are not part of the checked GitHub repository,
-# then the latest available version from the COMCIFS/cif_core repository
-# should be retrieved.
+# If these dictionaries are not part of the checked GitHub repository
+# and they have not been provided as external dictionaries, then the
+# latest available version from the COMCIFS/cif_core repository should
+# be retrieved.
 
-DDLM_REFERENCE_DIC=./ddl.dic
-if [ ! -f "${DDLM_REFERENCE_DIC}" ]
+test -f ./ddl.dic && DDLM_REFERENCE_DIC=./ddl.dic
+
+if [ ! -v DDLM_REFERENCE_DIC ]
 then
     git clone https://github.com/COMCIFS/cif_core.git "${TMP_DIR}"/cif_core
     DDLM_REFERENCE_DIC="${TMP_DIR}"/cif_core/ddl.dic
     # Specify the location of imported files (e.g. "templ_attr.cif")
-    COD_TOOLS_DDLM_IMPORT_PATH="${TMP_DIR}"/cif_core
-fi
-
-# Add extra dictionaries to the import path.
-if [ -d "${TOP_EXTRA_DIC_DIR}" ]
-then
-    for EXTRA_DIC_DIR in "${TOP_EXTRA_DIC_DIR}"/*
-    do
-        COD_TOOLS_DDLM_IMPORT_PATH="${COD_TOOLS_DDLM_IMPORT_PATH}:${EXTRA_DIC_DIR}"
-    done
+    COD_TOOLS_DDLM_IMPORT_PATH="$COD_TOOLS_DDLM_IMPORT_PATH:${TMP_DIR}/cif_core"
 fi
 
 export COD_TOOLS_DDLM_IMPORT_PATH
