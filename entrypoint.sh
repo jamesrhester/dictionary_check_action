@@ -2,6 +2,8 @@
 
 set -ue
 
+TOP_EXTRA_DIC_DIR=extra-dic-dir
+
 apt-get update
 
 # Install 'subversion' since it is needed to retrieve the cod-tools package
@@ -70,7 +72,17 @@ then
     # Specify the location of imported files (e.g. "templ_attr.cif")
     COD_TOOLS_DDLM_IMPORT_PATH="${TMP_DIR}"/cif_core
 fi
-export COD_TOOLS_DDLM_IMPORT_PATH 
+
+# Add extra dictionaries to the import path.
+if [ -d "${TOP_EXTRA_DIC_DIR}" ]
+then
+    for EXTRA_DIC_DIR in "${TOP_EXTRA_DIC_DIR}"/*
+    do
+        COD_TOOLS_DDLM_IMPORT_PATH="${COD_TOOLS_DDLM_IMPORT_PATH}:${EXTRA_DIC_DIR}"
+    done
+fi
+
+export COD_TOOLS_DDLM_IMPORT_PATH
 
 # run the checks
 shopt -s nullglob
