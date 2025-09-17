@@ -127,6 +127,11 @@ do
     #~      -e "ignored message A" \
     #~      -e "ignored message B" |
     #~ sponge "${OUT_FILE}"
+    grep "${OUT_FILE}" -v -F \
+         `# Data name from the imgCIF dictionary which cannot be renamed` \
+         `# (see https://github.com/COMCIFS/Powder_Dictionary/pull/268)` \
+         -e "'_array_intensities.gain_su' instead of '_array_intensities.gain_esd'" |
+    sponge "${OUT_FILE}"
     if [ -s "${OUT_FILE}" ]
     then
         echo "Dictionary check detected the following irregularities:";
