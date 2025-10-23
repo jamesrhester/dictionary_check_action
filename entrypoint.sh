@@ -127,11 +127,17 @@ do
     #~      -e "ignored message A" \
     #~      -e "ignored message B" |
     #~ sponge "${OUT_FILE}"
-    grep "${OUT_FILE}" -v -F \
-         `# Data name from the imgCIF dictionary which cannot be renamed` \
-         `# (see https://github.com/COMCIFS/Powder_Dictionary/pull/268)` \
-         -e "'_array_intensities.gain_su' instead of '_array_intensities.gain_esd'" |
-    sponge "${OUT_FILE}"
+    grep "${OUT_FILE}" -v -E \
+         `# Data name from the imgCIF dictionary which cannot be renamed.` \
+         `# See https://github.com/COMCIFS/Powder_Dictionary/pull/268` \
+         -e "'_array_intensities[.]gain_su' instead of '_array_intensities[.]gain_esd'" \
+         `# Primitive items with evaluation methods from the msCIF dictionary.` \
+         `# These evaluation methods should be allowed since they do not perform `
+         `# calculations, but only transform data structures.` \
+         `# See https://github.com/COMCIFS/cif_core/pull/561` \
+         -e "save_(reflns|diffrn_reflns)[.]limit_index_m_[1-8]_(min|max): .+ not contain evaluation" \
+         -e "save_(refln|diffrn_refln|diffrn_standard_refln|exptl_crystal_face)[.]index_m_[1-8]: .+ not contain evaluation"
+    | sponge "${OUT_FILE}"
     if [ -s "${OUT_FILE}" ]
     then
         echo "Dictionary check detected the following irregularities:";
