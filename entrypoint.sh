@@ -136,7 +136,7 @@ do
          `# calculations, but only transform data structures.` \
          `# See https://github.com/COMCIFS/cif_core/pull/561` \
          -e "save_(reflns|diffrn_reflns)[.]limit_index_m_[1-8]_(min|max): .+ not contain evaluation" \
-         -e "save_(refln|diffrn_refln|diffrn_standard_refln|exptl_crystal_face)[.]index_m_[1-8]: .+ not contain evaluation"
+         -e "save_(refln|diffrn_refln|diffrn_standard_refln|exptl_crystal_face)[.]index_m_[1-8]: .+ not contain evaluation" \
     | sponge "${OUT_FILE}"
     if [ -s "${OUT_FILE}" ]
     then
