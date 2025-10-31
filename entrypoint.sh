@@ -138,8 +138,8 @@ do
          -e "save_(reflns|diffrn_reflns)[.]limit_index_m_[1-9]_(min|max): .+ not contain evaluation" \
          -e "save_(refln|diffrn_refln|diffrn_standard_refln|exptl_crystal_face|twin_refln)[.]index_m_[1-9]: .+ not contain evaluation" \
          `# _type.dimension is provided in a dREL method` \
-         -e "save_.+(q_coeff|global_phase_list|m_list|max_list|min_list|matrix_w).+ '_type.dimension' should be specified"
-    | sponge "${OUT_FILE}"
+         -e "save_.+(q_coeff|global_phase_list|m_list|max_list|min_list|matrix_w).+ '_type.dimension' should be specified" |
+    sponge "${OUT_FILE}"
     if [ -s "${OUT_FILE}" ]
     then
         echo "Dictionary check detected the following irregularities:";
